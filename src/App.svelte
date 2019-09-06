@@ -1,6 +1,7 @@
 <script>
   import CustomInput from './CustomInput.svelte';
   import Toggle from './Toggle.svelte';
+  import { isValidEmail } from './validation.js';
 
   let val = "";
   let selectedOption = 1;
@@ -11,6 +12,15 @@
   let singleFavColor = 'blue';
   let usernameInput;
   let someDiv;
+  let customInput;
+  let enteredEmail = "";
+  let formIsValid = false;
+
+  $: if (isValidEmail(enteredEmail)) {
+    formIsValid = true;
+  } else {
+    formIsValid = false;
+  }
 
   $: console.log(val)
   $: console.log(selectedOption)
@@ -19,6 +29,7 @@
   $: console.log(favColor)
   $: console.log(favColorCheck)
   $: console.log(singleFavColor)
+  $: console.log(customInput)
 
   function setValue(e) {
     val = e.target.value
@@ -30,13 +41,20 @@
     console.log(usernameInput.value)
     console.dir(usernameInput)
     console.dir(someDiv)
+    customInput.empty()
   }
 </script>
+
+<style>
+  .invalid {
+    border: 1px solid red;
+  }
+</style>
 
 <input type="text" value={val}>
 <input type="text" value={val} on:input={setValue}>
 <input type="text" bind:value={val}>
-<CustomInput bind:val={val} />
+<CustomInput bind:this={customInput} />
 <Toggle bind:chosenOption={selectedOption} />
 
 <input type="number" value={price} on:input={e => console.log('1' +
@@ -89,3 +107,9 @@
 <button on:click={saveData}>Save</button>
 
 <div bind:this={someDiv}></div>
+
+<form on:submit|preventDefault>
+  <input type="email" bind:value={enteredEmail}
+  class={isValidEmail(enteredEmail) ? "" : 'invalid'}>
+  <button type="submit" disabled={!formIsValid}>Submit</button>
+</form>
