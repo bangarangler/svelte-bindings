@@ -9,6 +9,8 @@
   let favColor = 'green';
   let favColorCheck = ['green']
   let singleFavColor = 'blue';
+  let usernameInput;
+  let someDiv;
 
   $: console.log(val)
   $: console.log(selectedOption)
@@ -20,6 +22,14 @@
 
   function setValue(e) {
     val = e.target.value
+  }
+
+  function saveData() {
+    // vanilla js way to do it
+    /*console.log(document.querySelector('#username').value)*/
+    console.log(usernameInput.value)
+    console.dir(usernameInput)
+    console.dir(someDiv)
   }
 </script>
 
@@ -73,3 +83,9 @@
   <option value="red">Red</option>
   <option value="blue">Blue</option>
 </select>
+
+<hr>
+<input type="text" bind:this={usernameInput} />
+<button on:click={saveData}>Save</button>
+
+<div bind:this={someDiv}></div>
